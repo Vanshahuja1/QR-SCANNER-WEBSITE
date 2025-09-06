@@ -1,258 +1,160 @@
 "use client"
 
-import React, { useState } from "react"
-import { CreditCard, User, Mail, Phone, CheckCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Separator } from "@/components/ui/separator"
-import OrderConfirmation from "./OrderConfirmation"
+import { CreditCard, User, Mail, Phone, CheckCircle, X } from "lucide-react"
 
-export default function Checkout({ isOpen, onClose, items, total, onComplete, resID, qrID }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    specialInstructions: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showConfirmation, setShowConfirmation] = useState(false)
-  const [orderData, setOrderData] = useState(null)
-
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const handleSubmit = async (e) => {
+export default function Checkout({ 
+  isOpen, 
+  onClose, 
+  items, 
+  total, 
+  onComplete,
+  formData,
+  setFormData 
+}) {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setIsSubmitting(true)
+    
+    const orderData = {
+      orderId: `ORD${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
+      customerInfo: formData,
+      items,
+      total,
+      timestamp: new Date().toISOString(),
+      status: "accepted",
+      estimatedTime: "20-25 mins"
+    }
 
-    // Simulate order processing
-    setTimeout(() => {
-      const newOrderData = {
-        orderId: `ORD${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
-        customerInfo: formData,
-        items,
-        total,
-        resID,
-        qrID,
-        timestamp: new Date().toISOString(),
-        status: "accepted",
-        estimatedTime: "20-25 mins",
-      }
-
-      setOrderData(newOrderData)
-      setShowConfirmation(true)
-      setIsSubmitting(false)
-    }, 2000)
-  }
-
-  const handleConfirmationClose = () => {
-    setShowConfirmation(false)
     onComplete(orderData)
-    onClose()
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      specialInstructions: "",
-    })
   }
 
   const isFormValid = formData.name && formData.email && formData.phone
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent 
-          className="max-w-2xl max-h-[90vh] overflow-y-auto border-2"
-          style={{
-            backgroundColor: 'rgb(15, 18, 15)',
-            borderColor: 'rgb(212, 175, 55)'
-          }}
-        >
-          <DialogHeader>
-            <DialogTitle className="flex items-center text-xl font-bold" style={{color: 'rgb(212, 175, 55)'}}>
-              <CreditCard className="h-6 w-6 mr-2" />
-              Checkout
-            </DialogTitle>
-          </DialogHeader>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Customer Information */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold" style={{color: 'rgb(212, 175, 55)'}}>Customer Information</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-gray-300">
-                    <User className="h-4 w-4 inline mr-2" />
-                    Full Name *
-                  </Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
-                    className="border-2 text-white focus:ring-2 focus:ring-opacity-50"
-                    style={{
-                      backgroundColor: 'rgba(212, 175, 55, 0.05)',
-                      borderColor: 'rgba(212, 175, 55, 0.2)',
-                      focusBorderColor: 'rgb(212, 175, 55)',
-                      focusRingColor: 'rgb(212, 175, 55)'
-                    }}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-gray-300">
-                    <Phone className="h-4 w-4 inline mr-2" />
-                    Phone Number *
-                  </Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
-                    className="border-2 text-white focus:ring-2 focus:ring-opacity-50"
-                    style={{
-                      backgroundColor: 'rgba(212, 175, 55, 0.05)',
-                      borderColor: 'rgba(212, 175, 55, 0.2)',
-                      focusBorderColor: 'rgb(212, 175, 55)',
-                      focusRingColor: 'rgb(212, 175, 55)'
-                    }}
-                    required
-                  />
-                </div>
+      {/* Checkout Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose}></div>
+          <div className="relative rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2" style={{ backgroundColor: 'rgb(15, 18, 15)', borderColor: 'rgb(212, 175, 55)' }}>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold flex items-center" style={{ color: 'rgb(212, 175, 55)' }}>
+                  <CreditCard className="h-6 w-6 mr-2" />
+                  Checkout
+                </h2>
+                <button onClick={onClose} style={{ color: 'rgb(212, 175, 55)' }}>
+                  <X className="h-6 w-6" />
+                </button>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-300">
-                  <Mail className="h-4 w-4 inline mr-2" />
-                  Email Address *
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="border-2 text-white focus:ring-2 focus:ring-opacity-50"
-                  style={{
-                    backgroundColor: 'rgba(212, 175, 55, 0.05)',
-                    borderColor: 'rgba(212, 175, 55, 0.2)',
-                    focusBorderColor: 'rgb(212, 175, 55)',
-                    focusRingColor: 'rgb(212, 175, 55)'
-                  }}
-                  required
-                />
-              </div>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold" style={{ color: 'rgb(212, 175, 55)' }}>Customer Information</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <User className="h-4 w-4 inline mr-2" />
+                        Full Name *
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full px-4 py-2 rounded-lg border-2 text-white"
+                        style={{ backgroundColor: 'rgba(212, 175, 55, 0.05)', borderColor: 'rgba(212, 175, 55, 0.2)' }}
+                      />
+                    </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="instructions" className="text-gray-300">
-                  Special Instructions (Optional)
-                </Label>
-                <Textarea
-                  id="instructions"
-                  value={formData.specialInstructions}
-                  onChange={(e) => handleInputChange("specialInstructions", e.target.value)}
-                  className="border-2 text-white focus:ring-2 focus:ring-opacity-50"
-                  style={{
-                    backgroundColor: 'rgba(212, 175, 55, 0.05)',
-                    borderColor: 'rgba(212, 175, 55, 0.2)',
-                    focusBorderColor: 'rgb(212, 175, 55)',
-                    focusRingColor: 'rgb(212, 175, 55)'
-                  }}
-                  placeholder="Any special requests or dietary requirements..."
-                  rows={3}
-                />
-              </div>
-            </div>
-
-            <Separator style={{backgroundColor: 'rgba(212, 175, 55, 0.3)'}} />
-
-            {/* Order Summary */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold" style={{color: 'rgb(212, 175, 55)'}}>Order Summary</h3>
-
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {items.map((item) => (
-                  <div key={item.id} className="flex justify-between items-center text-sm">
-                    <span className="text-gray-300">
-                      {item.quantity}x {item.name}
-                    </span>
-                    <span style={{color: 'rgb(212, 175, 55)'}} className="font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </span>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <Phone className="h-4 w-4 inline mr-2" />
+                        Phone Number *
+                      </label>
+                      <input
+                        required
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        className="w-full px-4 py-2 rounded-lg border-2 text-white"
+                        style={{ backgroundColor: 'rgba(212, 175, 55, 0.05)', borderColor: 'rgba(212, 175, 55, 0.2)' }}
+                      />
+                    </div>
                   </div>
-                ))}
-              </div>
 
-              <Separator style={{backgroundColor: 'rgba(212, 175, 55, 0.3)'}} />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <Mail className="h-4 w-4 inline mr-2" />
+                      Email Address *
+                    </label>
+                    <input
+                      required
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-4 py-2 rounded-lg border-2 text-white"
+                      style={{ backgroundColor: 'rgba(212, 175, 55, 0.05)', borderColor: 'rgba(212, 175, 55, 0.2)' }}
+                    />
+                  </div>
 
-              <div className="flex justify-between items-center text-lg font-semibold">
-                <span style={{color: 'rgb(212, 175, 55)'}}>Total</span>
-                <span style={{color: 'rgb(212, 175, 55)'}}>${total.toFixed(2)}</span>
-              </div>
-            </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Special Instructions (Optional)
+                    </label>
+                    <textarea
+                      value={formData.specialInstructions}
+                      onChange={(e) => setFormData({...formData, specialInstructions: e.target.value})}
+                      rows={3}
+                      className="w-full px-4 py-2 rounded-lg border-2 text-white"
+                      style={{ backgroundColor: 'rgba(212, 175, 55, 0.05)', borderColor: 'rgba(212, 175, 55, 0.2)' }}
+                      placeholder="Any special requests or dietary requirements..."
+                    />
+                  </div>
+                </div>
 
-            {/* Submit Button */}
-            <div className="flex space-x-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                className="flex-1 border-2 text-white hover:text-black transition-all hover:scale-[1.02]"
-                style={{
-                  borderColor: 'rgb(212, 175, 55)',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(212, 175, 55)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgb(212, 175, 55)'
-                  e.target.style.color = 'rgb(15, 18, 15)'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'transparent'
-                  e.target.style.color = 'rgb(212, 175, 55)'
-                }}
-              >
-                Cancel
-              </Button>
+                <hr style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }} />
 
-              <Button
-                type="submit"
-                disabled={!isFormValid || isSubmitting}
-                className="flex-1 font-bold py-3 rounded-lg transition-all hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100"
-                style={{
-                  backgroundColor: 'rgb(212, 175, 55)',
-                  color: 'rgb(15, 18, 15)',
-                }}
-              >
-                {isSubmitting ? (
-                  <>
-                    <div 
-                      className="animate-spin rounded-full h-4 w-4 border-b-2 mr-2"
-                      style={{borderColor: 'rgb(15, 18, 15)'}}
-                    ></div>
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle className="h-4 w-4 mr-2" />
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold" style={{ color: 'rgb(212, 175, 55)' }}>Order Summary</h3>
+                  <div className="max-h-40 overflow-y-auto space-y-2">
+                    {items.map(item => (
+                      <div key={item.id} className="flex justify-between text-sm">
+                        <span className="text-gray-300">{item.quantity}x {item.name}</span>
+                        <span style={{ color: 'rgb(212, 175, 55)' }}>${(item.price * item.quantity).toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <hr style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }} />
+                  <div className="flex justify-between text-lg font-bold">
+                    <span style={{ color: 'rgb(212, 175, 55)' }}>Total</span>
+                    <span style={{ color: 'rgb(212, 175, 55)' }}>${total.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="flex-1 py-3 px-6 rounded-lg border-2 font-medium transition-colors"
+                    style={{ borderColor: 'rgb(212, 175, 55)', color: 'rgb(212, 175, 55)', backgroundColor: 'transparent' }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!isFormValid}
+                    className="flex-1 py-3 px-6 rounded-lg font-bold transition-all hover:scale-[1.02] disabled:opacity-50"
+                    style={{ backgroundColor: 'rgb(212, 175, 55)', color: 'rgb(15, 18, 15)' }}
+                  >
+                    <CheckCircle className="h-4 w-4 inline mr-2" />
                     Place Order
-                  </>
-                )}
-              </Button>
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-
-      {orderData && (
-        <OrderConfirmation isOpen={showConfirmation} onClose={handleConfirmationClose} orderData={orderData} />
+          </div>
+        </div>
       )}
     </>
   )

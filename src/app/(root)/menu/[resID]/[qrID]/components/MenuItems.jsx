@@ -1,188 +1,129 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { useState } from "react"
+import { Plus, Minus } from "lucide-react"
 
-const menuData = {
-  appetizers: [
-    {
-      id: "app1",
-      name: "Grilled Chicken Breast",
-      description: "Tender grilled chicken with herbs and spices",
-      price: 12.99,
-      image: "/grilled-chicken-breast.png",
-    },
-    {
-      id: "app2",
-      name: "Caesar Salad",
-      description: "Fresh romaine lettuce with parmesan and croutons",
-      price: 8.99,
-      image: "/caesar-salad.png",
-    },
-    {
-      id: "app3",
-      name: "Bruschetta",
-      description: "Toasted bread with fresh tomatoes and basil",
-      price: 9.99,
-      image: "/grilled-chicken-breast.png",
-    },
-    {
-      id: "app4",
-      name: "Soup of the Day",
-      description: "Chef's special seasonal soup creation",
-      price: 7.99,
-      image: "/caesar-salad.png",
-    },
-  ],
-  main: [
-    {
-      id: "main1",
-      name: "Beef Steak",
-      description: "Premium cut beef steak cooked to perfection",
-      price: 24.99,
-      image: "/juicy-beef-steak.png",
-    },
-    {
-      id: "main2",
-      name: "Pasta Carbonara",
-      description: "Classic Italian pasta with pancetta and parmesan",
-      price: 22.99,
-      image: "/pasta-carbonara.png",
-    },
-    {
-      id: "main3",
-      name: "Salmon Fillet",
-      description: "Fresh Atlantic salmon with lemon butter sauce",
-      price: 26.99,
-      image: "/juicy-beef-steak.png",
-    },
-    {
-      id: "main4",
-      name: "Vegetarian Risotto",
-      description: "Creamy risotto with seasonal vegetables",
-      price: 19.99,
-      image: "/pasta-carbonara.png",
-    },
-  ],
-  desserts: [
-    {
-      id: "des1",
-      name: "Chocolate Cake",
-      description: "Rich dark chocolate cake with berry compote",
-      price: 7.99,
-      image: "/decadent-chocolate-cake.png",
-    },
-    {
-      id: "des2",
-      name: "Tiramisu",
-      description: "Classic Italian dessert with coffee and mascarpone",
-      price: 8.99,
-      image: "/decadent-chocolate-cake.png",
-    },
-  ],
-  drinks: [
-    {
-      id: "drink1",
-      name: "Fresh Orange Juice",
-      description: "Freshly squeezed premium orange juice",
-      price: 4.99,
-      image: "/glass-of-orange-juice.png",
-    },
-    {
-      id: "drink2",
-      name: "Espresso",
-      description: "Rich Italian espresso coffee",
-      price: 3.99,
-      image: "/glass-of-orange-juice.png",
-    },
-    {
-      id: "drink3",
-      name: "House Wine",
-      description: "Selection of red or white house wines",
-      price: 6.99,
-      image: "/glass-of-orange-juice.png",
-    },
-  ],
-}
+const menuData = [
+  { id: "app1", name: "Grilled Chicken Breast", description: "Tender grilled chicken with herbs and spices", price: 12.99, image: "https://plus.unsplash.com/premium_photo-1661419883163-bb4df1c10109?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JpbGxlZCUyMGNoaWNrZW58ZW58MHx8MHx8fDA%3D", category: "Appetizers" },
+  { id: "app2", name: "Caesar Salad", description: "Fresh romaine lettuce with parmesan and croutons", price: 8.99, image: "https://images.unsplash.com/photo-1669283714145-f97867f6c238?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2Flc2FyJTIwc2FsYWR8ZW58MHx8MHx8fDA%3D", category: "Appetizers" },
+  { id: "main1", name: "Beef Steak", description: "Premium cut beef steak cooked to perfection", price: 24.99, image: "https://plus.unsplash.com/premium_photo-1669261882102-8f51c8b113c9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", category: "Main Courses" },
+  { id: "des1", name: "Chocolate Cake", description: "Rich dark chocolate cake with berry compote", price: 7.99, image: "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hvY29sYXRlJTIwY2FrZXxlbnwwfHwwfHx8MA%3D%3D", category: "Desserts" },
+  { id: "drink1", name: "Fresh Orange Juice", description: "Freshly squeezed premium orange juice", price: 4.99, image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8b3JhbmdlJTIwanVpY2V8ZW58MHx8MHx8fDA%3D", category: "Drinks" },
+  { id: "app3", name: "Chicken Wings", description: "Spicy and crispy chicken wings", price: 10.99, image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbiUyMHdpbmdzfGVufDB8fDB8fHww", category: "Appetizers" },
+  { id: "main2", name: "Grilled Salmon", description: "Salmon fillet grilled to perfection", price: 18.99, image: "https://images.unsplash.com/photo-1611599537845-1c7aca0091c0?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3JpbGxlZCUyMHNhbG1vbnxlbnwwfHwwfHx8MA%3D%3D", category: "Main Courses" },
+  { id: "des2", name: "Cheesecake", description: "Creamy cheesecake with a graham cracker crust", price: 5.99, image: "https://images.unsplash.com/photo-1702925614886-50ad13c88d3f?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hlZXNlY2FrZXxlbnwwfHwwfHx8MA%3D%3D", category: "Desserts" },
+  { id: "drink2", name: "Iced Coffee", description: "Chilled coffee with a hint of vanilla", price: 3.99, image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aWNlZCUyMGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D", category: "Drinks" },
+];
 
-export default function MenuItems({ activeCategory, onAddToCart }) {
-  const items = menuData[activeCategory] || []
-  const categoryTitles = {
-    appetizers: "APPETIZERS",
-    main: "MAIN COURSES",
-    desserts: "DESSERTS",
-    drinks: "DRINKS",
-  }
+const categories = ["All", "Appetizers", "Main Courses", "Desserts", "Drinks"]
+
+function MobileMenuItem({ item, quantity, onQuantityChange }) {
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Category Title */}
-      <div className="text-center mb-8">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-amber-100 mb-2">
-          {categoryTitles[activeCategory]}
-        </h2>
-        <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-yellow-600 mx-auto rounded-full"></div>
+    <div className="py-1 block md:hidden cursor-pointer">
+      <div onClick={() => setIsExpanded(!isExpanded)} className="flex items-center gap-2">
+        <img src={item.image} alt={item.name} className="w-1/5 h-16 object-cover rounded-md flex-shrink-0" />
+        <div className="flex-1">
+          <h3 className="text-sm font-semibold text-white leading-tight">{item.name}</h3>
+          <p className="text-xs text-yellow-400 font-bold">${item.price.toFixed(2)}</p>
+        </div>
+        {quantity > 0 ? (
+          <div className="flex items-center gap-1">
+            <button onClick={(e) => { e.stopPropagation(); onQuantityChange(item, quantity - 1) }} className="p-1 rounded bg-yellow-500 text-black">
+              <Minus className="w-3 h-3" />
+            </button>
+            <span className="text-sm text-white w-5 text-center">{quantity}</span>
+            <button onClick={(e) => { e.stopPropagation(); onQuantityChange(item, quantity + 1) }} className="p-1 rounded bg-yellow-500 text-black">
+              <Plus className="w-3 h-3" />
+            </button>
+          </div>
+        ) : (
+          <button onClick={(e) => { e.stopPropagation(); onQuantityChange(item, 1) }} className="p-1 rounded-full bg-yellow-500 text-black flex items-center justify-center">
+            <Plus className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
-      {/* Menu Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        {items.map((item) => (
-          <div 
-            key={item.id} 
-            className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-amber-200/20"
+      {isExpanded && (
+        <p className="text-xs text-gray-300 mt-1 ml-1">{item.description}</p>
+      )}
+    </div>
+  )
+}
+
+function DesktopMenuItem({ item, quantity, onQuantityChange }) {
+  return (
+    <div className="hidden md:flex flex-col rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border bg-gray-900 border-yellow-500 cursor-pointer">
+      <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-semibold text-lg mb-2 text-yellow-400">{item.name}</h3>
+        <p className="text-gray-300 text-sm mb-4 flex-1">{item.description}</p>
+        <div className="flex items-center justify-between">
+          <span className="font-bold text-yellow-400">${item.price.toFixed(2)}</span>
+          {quantity > 0 ? (
+            <div className="flex items-center gap-1">
+              <button onClick={() => onQuantityChange(item, quantity - 1)} className="p-1 rounded bg-yellow-500 text-black">
+                <Minus className="w-4 h-4" />
+              </button>
+              <span className="text-white font-bold">{quantity}</span>
+              <button onClick={() => onQuantityChange(item, quantity + 1)} className="p-1 rounded bg-yellow-500 text-black">
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => onQuantityChange(item, 1)} className="p-2 rounded-full bg-yellow-500 text-black flex items-center justify-center">
+              <Plus className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function MenuItems({ activeCategory, onCategoryChange, cart, onQuantityChange }) {
+  const filteredItems = activeCategory === "All" ? menuData : menuData.filter(item => item.category === activeCategory)
+
+  return (
+    <div className="px-2 py-4">
+      {/* Categories */}
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-3">
+        {categories.map(cat => (
+          <button
+            key={cat}
+            onClick={() => onCategoryChange(cat)}
+            className={`px-2 py-1 rounded-full transition text-xs md:text-sm md:px-3 md:py-2 font-semibold ${
+              activeCategory === cat ? "bg-yellow-500 text-black" : "border border-yellow-600 text-gray-300"
+            }`}
           >
-            {/* Image Container */}
-            <div className="relative h-48 sm:h-40 lg:h-48 overflow-hidden">
-              <img 
-                src={item.image || "/placeholder.svg"} 
-                alt={item.name}
-                className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
-              
-              {/* Price Badge */}
-              <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-900 px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                ${item.price}
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-4 sm:p-5">
-              <h3 className="text-amber-100 font-semibold text-lg sm:text-xl mb-2 leading-tight">
-                {item.name}
-              </h3>
-              
-              <p className="text-slate-300 text-sm sm:text-base mb-4 leading-relaxed line-clamp-2">
-                {item.description}
-              </p>
-
-              {/* Add to Cart Button */}
-              <Button
-                onClick={() => onAddToCart(item)}
-                className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-slate-900 font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add to Cart
-              </Button>
-            </div>
-          </div>
+            {cat}
+          </button>
         ))}
       </div>
 
-      {/* Empty State */}
-      {items.length === 0 && (
-        <div className="text-center py-16">
-          <div className="elegant-text-muted text-lg">
-            No items available in this category
-          </div>
-        </div>
-      )}
+      {/* Mobile Items */}
+      <div className="space-y-1">
+        {filteredItems.map(item => (
+          <MobileMenuItem
+            key={item.id}
+            item={item}
+            quantity={cart[item.id] || 0}
+            onQuantityChange={onQuantityChange}
+          />
+        ))}
+      </div>
 
-      {/* Mobile Optimization Info */}
-      <div className="mt-8 text-center">
-        <p className="elegant-text-muted text-sm">
-          Showing {items.length} item{items.length !== 1 ? 's' : ''} in {(categoryTitles[activeCategory] || 'menu').toLowerCase()}
-        </p>
+      {/* Desktop Items */}
+      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredItems.map(item => (
+          <DesktopMenuItem
+            key={item.id}
+            item={item}
+            quantity={cart[item.id] || 0}
+            onQuantityChange={onQuantityChange}
+          />
+        ))}
       </div>
     </div>
   )
