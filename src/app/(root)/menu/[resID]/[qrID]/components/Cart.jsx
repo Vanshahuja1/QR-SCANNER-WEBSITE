@@ -2,17 +2,57 @@
 
 import { Plus, Minus, Trash2, ShoppingBag, X } from "lucide-react"
 
-// Cart Item Component
-function CartItem({ item, onUpdateQuantity, onRemove }) {
+// Mobile Cart Row
+function MobileCartItem({ item, onUpdateQuantity, onRemove }) {
   return (
-    <div className="flex items-start space-x-4 p-4 rounded-xl border transition-all" style={{ backgroundColor: 'rgba(212, 175, 55, 0.05)', borderColor: 'rgba(212, 175, 55, 0.2)' }}>
+    <div className="flex items-center gap-2 py-2">
+      {/* Image (20% width) */}
+      <img
+        src={item.image}
+        alt={item.name}
+        className="w-14 h-14 object-cover rounded-md flex-shrink-0"
+      />
+
+      {/* Name + Price */}
+      <div className="flex-1">
+        <h3 className="text-sm font-semibold text-white leading-tight">{item.name}</h3>
+        <p className="text-xs text-yellow-400 font-bold">${item.price.toFixed(2)}</p>
+      </div>
+
+      {/* Counter */}
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onUpdateQuantity(item.id, Math.max(0, item.quantity - 1))}
+          className="p-1 rounded bg-yellow-500 text-black"
+        >
+          <Minus className="w-3 h-3" />
+        </button>
+        <span className="text-sm text-white w-5 text-center">{item.quantity}</span>
+        <button
+          onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+          className="p-1 rounded bg-yellow-500 text-black"
+        >
+          <Plus className="w-3 h-3" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// Existing Desktop Cart Item
+function DesktopCartItem({ item, onUpdateQuantity, onRemove }) {
+  return (
+    <div className="flex items-start space-x-4 p-4 rounded-xl border transition-all hidden sm:flex" 
+      style={{ backgroundColor: 'rgba(212, 175, 55, 0.05)', borderColor: 'rgba(212, 175, 55, 0.2)' }}>
+      
       <div className="relative">
         <img
           src={item.image}
           alt={item.name}
-          className="w-20 h-20 object-cover rounded-lg"
+          className="w-10 h-10 object-cover rounded-lg"
         />
-        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: 'rgb(212, 175, 55)', color: 'rgb(15, 18, 15)' }}>
+        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" 
+          style={{ backgroundColor: 'rgb(212, 175, 55)', color: 'rgb(15, 18, 15)' }}>
           {item.quantity}
         </div>
       </div>
@@ -20,10 +60,10 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-start">
           <div>
-            <h4 className="font-semibold text-lg mb-1" style={{ color: 'rgb(212, 175, 55)' }}>{item.name}</h4>
+            <h4 className="font-semibold text-sm mb-1" style={{ color: 'rgb(212, 175, 55)' }}>{item.name}</h4>
             <p className="text-sm text-gray-300 mb-2">{item.description}</p>
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold" style={{ color: 'rgb(212, 175, 55)' }}>${item.price.toFixed(2)}</span>
+              <span className="text-sm font-bold" style={{ color: 'rgb(212, 175, 55)' }}>${item.price.toFixed(2)}</span>
               <span className="text-sm text-gray-400">each</span>
             </div>
           </div>
@@ -84,18 +124,21 @@ export default function Cart({
 
   return (
     <>
-      {/* Cart Overlay */}
       {isOpen && (
         <div className="fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose}></div>
-          <div className="absolute right-0 top-0 h-full w-full max-w-lg border-l-2" style={{ backgroundColor: 'rgb(15, 18, 15)', borderColor: 'rgb(212, 175, 55)' }}>
+          <div className="absolute right-0 top-0 h-full w-full max-w-lg border-l-2" 
+            style={{ backgroundColor: 'rgb(15, 18, 15)', borderColor: 'rgb(212, 175, 55)' }}>
+            
             <div className="flex flex-col h-full">
-              <div className="border-b p-6" style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }}>
+              {/* Header */}
+              <div className="border-b p-4 sm:p-6" style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center" style={{ color: 'rgb(212, 175, 55)' }}>
-                    <ShoppingBag className="h-6 w-6 mr-2" />
-                    <h2 className="text-xl font-bold">Your Order</h2>
-                    <span className="ml-2 px-2 py-1 rounded-full text-sm font-medium" style={{ backgroundColor: 'rgb(212, 175, 55)', color: 'rgb(15, 18, 15)' }}>
+                    <ShoppingBag className="h-5 w-5 mr-2" />
+                    <h2 className="text-sm font-bold">Your Order</h2>
+                    <span className="ml-1 px-1 py-1 rounded-full text-xs font-sm" 
+                      style={{ backgroundColor: 'rgb(212, 175, 55)', color: 'rgb(15, 18, 15)' }}>
                       {totalItems} items
                     </span>
                   </div>
@@ -105,29 +148,48 @@ export default function Cart({
                 </div>
               </div>
 
+              {/* Body */}
               {items.length === 0 ? (
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center">
-                    <ShoppingBag className="h-20 w-20 mx-auto mb-4" style={{ color: 'rgba(212, 175, 55, 0.6)' }} />
-                    <h3 className="text-xl font-semibold mb-2" style={{ color: 'rgb(212, 175, 55)' }}>Your cart is empty</h3>
+                    <ShoppingBag className="h-10 w-10 mx-auto mb-2" style={{ color: 'rgba(212, 175, 55, 0.6)' }} />
+                    <h3 className="text-sm font-semibold mb-2" style={{ color: 'rgb(212, 175, 55)' }}>Your cart is empty</h3>
                     <p className="text-gray-400">Add some delicious items to get started!</p>
                   </div>
                 </div>
               ) : (
                 <>
-                  <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                    {items.map(item => (
-                      <CartItem 
-                        key={item.id} 
-                        item={item} 
-                        onUpdateQuantity={onUpdateQuantity}
-                        onRemove={onRemoveItem}
-                      />
-                    ))}
+                  <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-2">
+                    {/* Mobile Layout */}
+                    <div className="block sm:hidden">
+                      {items.map(item => (
+                        <MobileCartItem 
+                          key={item.id} 
+                          item={item} 
+                          onUpdateQuantity={onUpdateQuantity}
+                          onRemove={onRemoveItem}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Desktop Layout */}
+                    <div className="hidden sm:block">
+                      {items.map(item => (
+                        <DesktopCartItem 
+                          key={item.id} 
+                          item={item} 
+                          onUpdateQuantity={onUpdateQuantity}
+                          onRemove={onRemoveItem}
+                        />
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="border-t p-6 space-y-4" style={{ borderColor: 'rgba(212, 175, 55, 0.3)', backgroundColor: 'rgba(212, 175, 55, 0.08)' }}>
-                    <div className="space-y-2">
+                  {/* Footer */}
+                  <div className="border-t p-3 sm:p-4 space-y-2 sm:space-y-3" 
+                    style={{ borderColor: 'rgba(212, 175, 55, 0.3)', backgroundColor: 'rgba(212, 175, 55, 0.08)' }}>
+                    
+                    <div className="space-y-2 sm:space-y-2 text-sm sm:text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-300">Subtotal</span>
                         <span style={{ color: 'rgb(212, 175, 55)' }}>${subtotal.toFixed(2)}</span>
@@ -137,7 +199,7 @@ export default function Cart({
                         <span style={{ color: 'rgb(212, 175, 55)' }}>${tax.toFixed(2)}</span>
                       </div>
                       <hr style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }} />
-                      <div className="flex justify-between text-xl font-bold">
+                      <div className="flex justify-between text-xl sm:text-xl font-bold">
                         <span style={{ color: 'rgb(212, 175, 55)' }}>Total</span>
                         <span style={{ color: 'rgb(212, 175, 55)' }}>${total.toFixed(2)}</span>
                       </div>
@@ -145,7 +207,7 @@ export default function Cart({
 
                     <button
                       onClick={onCheckout}
-                      className="w-full py-4 px-6 rounded-xl font-bold text-lg transition-all hover:scale-[1.02]"
+                      className="w-full py-2 sm:py-4 px-3 rounded-sm font-bold text-sm sm:text-sm transition-all hover:scale-[1.02]"
                       style={{ backgroundColor: 'rgb(212, 175, 55)', color: 'rgb(15, 18, 15)' }}
                     >
                       Proceed to Checkout → ${total.toFixed(2)}
