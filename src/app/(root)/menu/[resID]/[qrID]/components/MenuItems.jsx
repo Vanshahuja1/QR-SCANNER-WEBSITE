@@ -1,19 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, Fragment } from "react"
 import { Plus, Minus } from "lucide-react"
 
 const menuData = [
-  { id: "app1", name: "Grilled Chicken Breast", description: "Tender grilled chicken with herbs and spices", price: 12.99, image: "https://plus.unsplash.com/premium_photo-1661419883163-bb4df1c10109?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JpbGxlZCUyMGNoaWNrZW58ZW58MHx8MHx8fDA%3D", category: "Appetizers" },
-  { id: "app2", name: "Caesar Salad", description: "Fresh romaine lettuce with parmesan and croutons", price: 8.99, image: "https://images.unsplash.com/photo-1669283714145-f97867f6c238?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2Flc2FyJTIwc2FsYWR8ZW58MHx8MHx8fDA%3D", category: "Appetizers" },
-  { id: "main1", name: "Beef Steak", description: "Premium cut beef steak cooked to perfection", price: 24.99, image: "https://plus.unsplash.com/premium_photo-1669261882102-8f51c8b113c9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", category: "Main Courses" },
-  { id: "des1", name: "Chocolate Cake", description: "Rich dark chocolate cake with berry compote", price: 7.99, image: "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hvY29sYXRlJTIwY2FrZXxlbnwwfHwwfHx8MA%3D%3D", category: "Desserts" },
-  { id: "drink1", name: "Fresh Orange Juice", description: "Freshly squeezed premium orange juice", price: 4.99, image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8b3JhbmdlJTIwanVpY2V8ZW58MHx8MHx8fDA%3D", category: "Drinks" },
-  { id: "app3", name: "Chicken Wings", description: "Spicy and crispy chicken wings", price: 10.99, image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbiUyMHdpbmdzfGVufDB8fDB8fHww", category: "Appetizers" },
-  { id: "main2", name: "Grilled Salmon", description: "Salmon fillet grilled to perfection", price: 18.99, image: "https://images.unsplash.com/photo-1611599537845-1c7aca0091c0?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3JpbGxlZCUyMHNhbG1vbnxlbnwwfHwwfHx8MA%3D%3D", category: "Main Courses" },
-  { id: "des2", name: "Cheesecake", description: "Creamy cheesecake with a graham cracker crust", price: 5.99, image: "https://images.unsplash.com/photo-1702925614886-50ad13c88d3f?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hlZXNlY2FrZXxlbnwwfHwwfHx8MA%3D%3D", category: "Desserts" },
-  { id: "drink2", name: "Iced Coffee", description: "Chilled coffee with a hint of vanilla", price: 3.99, image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aWNlZCUyMGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D", category: "Drinks" },
-];
+  { id: "app1", name: "Grilled Chicken Breast", description: "Tender grilled chicken with herbs and spices", price: 12.99, image: "https://plus.unsplash.com/premium_photo-1661419883163-bb4df1c10109?w=600&auto=format&fit=crop&q=60", category: "Appetizers" },
+  { id: "app2", name: "Caesar Salad", description: "Fresh romaine lettuce with parmesan and croutons", price: 8.99, image: "https://images.unsplash.com/photo-1669283714145-f97867f6c238?w=600&auto=format&fit=crop&q=60", category: "Appetizers" },
+  { id: "main1", name: "Beef Steak", description: "Premium cut beef steak cooked to perfection", price: 24.99, image: "https://plus.unsplash.com/premium_photo-1669261882102-8f51c8b113c9?q=80&w=687&auto=format&fit=crop&q=60", category: "Main Courses" },
+  { id: "des1", name: "Chocolate Cake", description: "Rich dark chocolate cake with berry compote", price: 7.99, image: "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=1000&auto=format&fit=crop&q=60", category: "Desserts" },
+  { id: "app3", name: "Chicken Wings", description: "Spicy and crispy chicken wings", price: 10.99, image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=1000&auto=format&fit=crop&q=60", category: "Appetizers" },
+  { id: "main2", name: "Grilled Salmon", description: "Salmon fillet grilled to perfection", price: 18.99, image: "https://images.unsplash.com/photo-1611599537845-1c7aca0091c0?w=1000&auto=format&fit=crop&q=60", category: "Main Courses" },
+  { id: "des2", name: "Cheesecake", description: "Creamy cheesecake with a graham cracker crust", price: 5.99, image: "https://images.unsplash.com/photo-1702925614886-50ad13c88d3f?w=1000&auto=format&fit=crop&q=60", category: "Desserts" },
+  { id: "drink2", name: "Iced Coffee", description: "Chilled coffee with a hint of vanilla", price: 3.99, image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1000&auto=format&fit=crop&q=60", category: "Drinks" },
+]
 
 const categories = ["All", "Appetizers", "Main Courses", "Desserts", "Drinks"]
 
@@ -83,7 +82,9 @@ function DesktopMenuItem({ item, quantity, onQuantityChange }) {
 }
 
 export default function MenuItems({ activeCategory, onCategoryChange, cart, onQuantityChange }) {
-  const filteredItems = activeCategory === "All" ? menuData : menuData.filter(item => item.category === activeCategory)
+  const filteredItems = activeCategory === "All" 
+    ? menuData 
+    : menuData.filter(item => item.category === activeCategory)
 
   return (
     <div className="px-2 py-4">
@@ -104,27 +105,62 @@ export default function MenuItems({ activeCategory, onCategoryChange, cart, onQu
 
       {/* Mobile Items */}
       <div className="space-y-1">
-        {filteredItems.map(item => (
-          <MobileMenuItem
-            key={item.id}
-            item={item}
-            quantity={cart[item.id] || 0}
-            onQuantityChange={onQuantityChange}
-          />
+        {filteredItems.map((item, index) => (
+          <div key={item.id || index}>
+            {item.id && (
+              <MobileMenuItem
+                item={item}
+                quantity={cart[item.id] || 0}
+                onQuantityChange={onQuantityChange}
+              />
+            )}
+
+            {activeCategory === "All" && index === Math.floor(filteredItems.length / 2) && (
+              <div className="w-full my-4">
+                <img
+                  src="/Advertisment.jpg"
+                  alt="Advertisement"
+                  className="w-full h-15 md:h-40 object-cover rounded-lg shadow-lg"
+                />
+              </div>
+            )}
+          </div>
         ))}
       </div>
 
       {/* Desktop Items */}
-      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredItems.map(item => (
+      {/* Desktop Items */}
+<div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  {filteredItems.map((item, index) => {
+    // Insert ad in the middle once
+    if (
+      activeCategory === "All" &&
+      index === Math.floor(filteredItems.length / 2)
+    ) {
+      return (
+        <React.Fragment key={`ad-${index}`}>
           <DesktopMenuItem
-            key={item.id}
             item={item}
             quantity={cart[item.id] || 0}
             onQuantityChange={onQuantityChange}
           />
-        ))}
-      </div>
+          {/* Ad block (only once, same place as mobile) */}
+          
+        </React.Fragment>
+      )
+    }
+
+    return (
+      <DesktopMenuItem
+        key={item.id || index}
+        item={item}
+        quantity={cart[item.id] || 0}
+        onQuantityChange={onQuantityChange}
+      />
+    )
+  })}
+</div>
+
     </div>
   )
 }

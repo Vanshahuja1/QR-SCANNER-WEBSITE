@@ -12,7 +12,7 @@ export default function Header({ cartItemsCount, onCartClick }) {
               Y
             </div>
             <h1 className="text-2xl font-bold" style={{ color: 'rgb(212, 175, 55)' }}>
-              Yamster
+              Yumster
             </h1>
           </div>
 
