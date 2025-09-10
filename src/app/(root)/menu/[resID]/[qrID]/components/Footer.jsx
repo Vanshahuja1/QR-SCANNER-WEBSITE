@@ -47,16 +47,16 @@ export default function Footer() {
           <div className="space-y-3">
             <h3 className="text-lg font-semibold" style={{ color: 'rgb(212, 175, 55)' }}>Quick Links</h3>
             <div className="space-y-2 text-sm">
-              <a href="#" className="block text-gray-300 hover:text-yellow-400 transition-colors">
+              <a href="#" className="block text-gray-300 hover:text-E0A2A2-400 transition-colors">
                 About Us
               </a>
-              <a href="#" className="block text-gray-300 hover:text-yellow-400 transition-colors">
+              <a href="#" className="block text-gray-300 hover:text-E0A2A2-400 transition-colors">
                 Privacy Policy
               </a>
-              <a href="#" className="block text-gray-300 hover:text-yellow-400 transition-colors">
+              <a href="#" className="block text-gray-300 hover:text-E0A2A2-400 transition-colors">
                 Terms of Service
               </a>
-              <a href="#" className="block text-gray-300 hover:text-yellow-400 transition-colors">
+              <a href="#" className="block text-gray-300 hover:text-E0A2A2-400 transition-colors">
                 Contact Support
               </a>
             </div>

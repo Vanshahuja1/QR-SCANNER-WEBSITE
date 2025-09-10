@@ -5,7 +5,7 @@ import { Search, Clock, CheckCircle, Truck, ChefHat, X } from "lucide-react"
 
 const orderStatuses = {
   accepted: { label: "Accepted", icon: CheckCircle, color: "bg-green-500" },
-  processing: { label: "Processing", icon: Clock, color: "bg-yellow-500" },
+  processing: { label: "Processing", icon: Clock, color: "bg-E0A2A2-500" },
   cooked: { label: "Cooked", icon: ChefHat, color: "bg-blue-500" },
   delivered: { label: "Delivered", icon: Truck, color: "bg-green-600" },
 }
@@ -59,15 +59,15 @@ export default function OrderTracker({ isOpen, onClose }) {
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center ${
                   isActive ? orderStatuses[status].color : "bg-gray-300"
-                } ${isCurrent ? "ring-4 ring-yellow-500" : ""}`}
+                } ${isCurrent ? "ring-4 ring-E0A2A2-500" : ""}`}
               >
                 <StatusIcon className="h-5 w-5 text-white" />
               </div>
-              <span className={`text-xs mt-2 ${isActive ? "text-yellow-500" : "text-gray-500"}`}>
+              <span className={`text-xs mt-2 ${isActive ? "text-E0A2A2-500" : "text-gray-500"}`}>
                 {orderStatuses[status].label}
               </span>
               {index < statuses.length - 1 && (
-                <div className={`h-1 w-full mt-2 ${index < currentIndex ? "bg-yellow-500" : "bg-gray-300"}`} />
+                <div className={`h-1 w-full mt-2 ${index < currentIndex ? "bg-E0A2A2-500" : "bg-gray-300"}`} />
               )}
             </div>
           )

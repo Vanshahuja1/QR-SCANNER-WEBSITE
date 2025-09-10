@@ -7,7 +7,7 @@ import Cart from './components/Cart'
 import Checkout from './components/Checkout'
 import OrderConfirmation from './components/OrderConfirmation'
 import OrderTracker from './components/OrderTracker'
-import Footer from './components/Footer'
+/*import Footer from './components/Footer'*/
 
 export default function Page() {
   const [cartItems, setCartItems] = useState([])
@@ -102,6 +102,7 @@ export default function Page() {
     <div className="min-h-screen" style={{ backgroundColor: 'rgb(15, 18, 15)' }}>
       {/* Header */}
       <Header 
+      restaurantName="Spice Villa" 
         cartItemsCount={getTotalItems()}
         onCartClick={() => setIsCartOpen(true)}
         onTrackOrderClick={() => setIsOrderTrackerOpen(true)}
@@ -122,7 +123,7 @@ export default function Page() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
 
       {/* Cart */}
       <Cart

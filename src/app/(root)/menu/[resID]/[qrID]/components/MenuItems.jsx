@@ -20,58 +20,75 @@ function MobileMenuItem({ item, quantity, onQuantityChange }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className="py-1 block md:hidden cursor-pointer">
-      <div onClick={() => setIsExpanded(!isExpanded)} className="flex items-center gap-2">
-        <img src={item.image} alt={item.name} className="w-1/5 h-16 object-cover rounded-md flex-shrink-0" />
+    <div className="py-0.5 block md:hidden cursor-pointer">
+      <div 
+        onClick={() => setIsExpanded(!isExpanded)} 
+        className="flex items-center gap-2 bg-[#510400] rounded-lg p-2 border border-[#B76E79]"
+      >
+        <img 
+          src={item.image} 
+          alt={item.name} 
+          className="w-1/5 h-16 object-cover rounded-md flex-shrink-0" 
+        />
         <div className="flex-1">
           <h3 className="text-sm font-semibold text-white leading-tight">{item.name}</h3>
-          <p className="text-xs text-yellow-400 font-bold">${item.price.toFixed(2)}</p>
+          <p className="text-xs text-[#E7B2A4] font-bold">${item.price.toFixed(2)}</p>
         </div>
         {quantity > 0 ? (
           <div className="flex items-center gap-1">
-            <button onClick={(e) => { e.stopPropagation(); onQuantityChange(item, quantity - 1) }} className="p-1 rounded bg-yellow-500 text-black">
+            <button 
+              onClick={(e) => { e.stopPropagation(); onQuantityChange(item, quantity - 1) }} 
+              className="p-1 rounded bg-[#E7B2A4] text-white"
+            >
               <Minus className="w-3 h-3" />
             </button>
             <span className="text-sm text-white w-5 text-center">{quantity}</span>
-            <button onClick={(e) => { e.stopPropagation(); onQuantityChange(item, quantity + 1) }} className="p-1 rounded bg-yellow-500 text-black">
+            <button 
+              onClick={(e) => { e.stopPropagation(); onQuantityChange(item, quantity + 1) }} 
+              className="p-1 rounded bg-[#E7B2A4] text-white"
+            >
               <Plus className="w-3 h-3" />
             </button>
           </div>
         ) : (
-          <button onClick={(e) => { e.stopPropagation(); onQuantityChange(item, 1) }} className="p-1 rounded-full bg-yellow-500 text-black flex items-center justify-center">
+          <button 
+            onClick={(e) => { e.stopPropagation(); onQuantityChange(item, 1) }} 
+            className="p-1 rounded-full bg-[#E7B2A4] text-white flex items-center justify-center"
+          >
             <Plus className="w-4 h-4" />
           </button>
         )}
       </div>
 
       {isExpanded && (
-        <p className="text-xs text-gray-300 mt-1 ml-1">{item.description}</p>
+        <p className="text-xs text-gray-200 mt-1 ml-1">{item.description}</p>
       )}
     </div>
   )
 }
 
+
 function DesktopMenuItem({ item, quantity, onQuantityChange }) {
   return (
-    <div className="hidden md:flex flex-col rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border bg-gray-900 border-yellow-500 cursor-pointer">
+    <div className="py-0.5 hidden md:flex flex-col rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border bg-[#510400] border-[#B76E79] cursor-pointer">
       <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
       <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-semibold text-lg mb-2 text-yellow-400">{item.name}</h3>
-        <p className="text-gray-300 text-sm mb-4 flex-1">{item.description}</p>
+        <h3 className="font-semibold text-lg mb-2 text-[#E7B2A4]">{item.name}</h3>
+        <p className="text-gray-200 text-sm mb-4 flex-1">{item.description}</p>
         <div className="flex items-center justify-between">
-          <span className="font-bold text-yellow-400">${item.price.toFixed(2)}</span>
+          <span className="font-bold text-[#E7B2A4]">${item.price.toFixed(2)}</span>
           {quantity > 0 ? (
             <div className="flex items-center gap-1">
-              <button onClick={() => onQuantityChange(item, quantity - 1)} className="p-1 rounded bg-yellow-500 text-black">
+              <button onClick={() => onQuantityChange(item, quantity - 1)} className="p-1 rounded bg-[#E7B2A4] text-white">
                 <Minus className="w-4 h-4" />
               </button>
               <span className="text-white font-bold">{quantity}</span>
-              <button onClick={() => onQuantityChange(item, quantity + 1)} className="p-1 rounded bg-yellow-500 text-black">
+              <button onClick={() => onQuantityChange(item, quantity + 1)} className="p-1 rounded bg-[#E7B2A4] text-white">
                 <Plus className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <button onClick={() => onQuantityChange(item, 1)} className="p-2 rounded-full bg-yellow-500 text-black flex items-center justify-center">
+            <button onClick={() => onQuantityChange(item, 1)} className="p-2 rounded-full bg-[#E7B2A4] text-white flex items-center justify-center">
               <Plus className="w-4 h-4" />
             </button>
           )}
@@ -95,7 +112,7 @@ export default function MenuItems({ activeCategory, onCategoryChange, cart, onQu
             key={cat}
             onClick={() => onCategoryChange(cat)}
             className={`px-2 py-1 rounded-full transition text-xs md:text-sm md:px-3 md:py-2 font-semibold ${
-              activeCategory === cat ? "bg-yellow-500 text-black" : "border border-yellow-600 text-gray-300"
+              activeCategory === cat ? "bg-[#E7B2A4] text-white" : "border border-[#E7B2A4] text-gray-200"
             }`}
           >
             {cat}
@@ -129,38 +146,33 @@ export default function MenuItems({ activeCategory, onCategoryChange, cart, onQu
       </div>
 
       {/* Desktop Items */}
-      {/* Desktop Items */}
-<div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-  {filteredItems.map((item, index) => {
-    // Insert ad in the middle once
-    if (
-      activeCategory === "All" &&
-      index === Math.floor(filteredItems.length / 2)
-    ) {
-      return (
-        <React.Fragment key={`ad-${index}`}>
-          <DesktopMenuItem
-            item={item}
-            quantity={cart[item.id] || 0}
-            onQuantityChange={onQuantityChange}
-          />
-          {/* Ad block (only once, same place as mobile) */}
-          
-        </React.Fragment>
-      )
-    }
+      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredItems.map((item, index) => {
+          if (
+            activeCategory === "All" &&
+            index === Math.floor(filteredItems.length / 2)
+          ) {
+            return (
+              <React.Fragment key={`ad-${index}`}>
+                <DesktopMenuItem
+                  item={item}
+                  quantity={cart[item.id] || 0}
+                  onQuantityChange={onQuantityChange}
+                />
+              </React.Fragment>
+            )
+          }
 
-    return (
-      <DesktopMenuItem
-        key={item.id || index}
-        item={item}
-        quantity={cart[item.id] || 0}
-        onQuantityChange={onQuantityChange}
-      />
-    )
-  })}
-</div>
-
+          return (
+            <DesktopMenuItem
+              key={item.id || index}
+              item={item}
+              quantity={cart[item.id] || 0}
+              onQuantityChange={onQuantityChange}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }
